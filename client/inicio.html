@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar Sesión y Registrarse</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f4f4f4;
+      }
+
+      .container {
+        display: flex;
+        gap: 20px;
+        background: white;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        width: 300px;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+      }
+
+      label {
+        margin: 5px 0;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Formulario para Iniciar Sesión -->
+      <form id="login-form" action="/login" method="POST">
+        <h2>Iniciar Sesión</h2>
+        <label for="login-username">Usuario</label>
+        <input
+          type="text"
+          id="login-username"
+          name="nombre"
+          required
+          placeholder="Tu usuario"
+        />
+        <label for="login-password">Contraseña</label>
+        <input
+          type="password"
+          id="login-password"
+          name="contraseña"
+          required
+          placeholder="Tu contraseña"
+        />
+        <button type="submit">Entrar</button>
+      </form>
+
+      <!-- Formulario para Registrarse -->
+      <form action="/register" method="POST" id="register-form">
+        <h2>Registrarse</h2>
+        <label for="register-username">Usuario</label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre"
+          required
+          placeholder="Tu usuario"
+        />
+        <label for="register-password">Contraseña</label>
+        <input
+          type="password"
+          id="contraseña"
+          name="contraseña"
+          required
+          placeholder="Tu contraseña"
+        />
+        <button id="registrarb" type="submit">Registrar</button>
+      </form>
+    </div>
+
+    <script>
+      // Manejo de inicio de sesión
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const nombre = document.getElementById("login-username").value;
+          const contraseña = document.getElementById("login-password").value;
+
+          const response = await fetch("/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ nombre, contraseña }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            // Guardar usuario y contraseña en sessionStorage
+            sessionStorage.setItem("usuario", nombre);
+            sessionStorage.setItem("contraseña", contraseña);
+
+            // Redirigir a /menu
+            window.location.href = data.redirect;
+          } else {
+            alert("Error: Usuario o contraseña incorrectos");
+          }
+        });
+
+      // Manejo de registro
+      document
+        .getElementById("register-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const nombre = document.getElementById("nombre").value;
+          const contraseña = document.getElementById("contraseña").value;
+
+          const response = await fetch("/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ nombre, contraseña }),
+          });
+
+          if (response.ok) {
+            alert("Registro exitoso");
+          } else {
+            alert("Error al registrarse");
+          }
+        });
+    </script>
+  </body>
+</html>

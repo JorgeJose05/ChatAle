@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú</title>
+</head>
+
+<body>
+    <h1>Bienvenido al Menú</h1>
+    <p id="user-info"></p>
+
+    <script>
+        // Recuperar usuario de sessionStorage
+        const usuario = sessionStorage.getItem('usuario');
+        const contraseña = sessionStorage.getItem('contraseña');
+
+        if (usuario && contraseña) {
+            document.getElementById('user-info').textContent = `Usuario conectado: ${usuario}`;
+        } else {
+            document.getElementById('user-info').textContent = 'No hay usuario conectado';
+        }
+    </script>
+     <h1>Opciones</h1>
+     <button id="unir" onclick="window.location.href='/chat';">
+       Unirse a Sala
+     </button>
+</body>
+
+</html>
